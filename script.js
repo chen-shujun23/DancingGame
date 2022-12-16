@@ -9,6 +9,8 @@ const pageLoaded = () => {
 
   //Get a handle to the canvas object
   const canvas = document.querySelector("#myCanvas");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
   //Get the 2d context for this canvas
   //2d context objects provide methods to draw game elements on screen
@@ -19,4 +21,7 @@ const pageLoaded = () => {
 
 const createRow = () => {};
 
-//commit
+//Audio
+//rythm 1: 11231
+//rythm 2: 111321
+//rythm 3: 11132111
