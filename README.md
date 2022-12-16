@@ -1,2 +1,2 @@
 # Dancing-Game-
-Dancing game inspired by retro game, PSX Bishi Bashi Perm Mania
+Dancing game inspired by retro game, Tero Beats PSX Bishi Bashi
