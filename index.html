@@ -4,28 +4,31 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
     <link href="main.css" rel="stylesheet" />
-
     <title>Dancing Game</title>
   </head>
   <body onload="pageLoaded();">
-    <div class="cotainer">
-      <h1>Dancing Game</h1>
-      <canvas id="myCanvas" style="border: 1px solid black"></canvas>
-      <img
-        id="sprite-sheet"
-        src="sprites.png"
-        alt="Sprite sheet for my web game"
-      />
+    <div id="wrapper">
+      <div id="gameContainer">
+        <canvas id="gameCanvas" class="gamelayer"></canvas>
+        <div id="gamestartscreen" class="gamelayer">
+          <img src="images/icons/play.png" alt="Play" class="icons" />
+          <img src="images/icons/menu.png" alt="Menu" class="icons" />
+        </div>
+        <div id="scorescreen" class="gamelayer">
+          <img src="images/icons/restart.png" alt="Restart" class="icons" />
+          <span id="score">Score: 0</span>
+        </div>
+        <div id="ending screen" class="gamelayer">
+          <div>
+            <p id="endingmessage">Game over!</p>
+            <p id="endplay" class="endingoption">
+              <img src="images/icons/replay.png" alt="Replay" class="icons" />
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="script.js" charset="utf-8"></script>
   </body>
 </html>
-
-<!--commit-->
