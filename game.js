@@ -46,17 +46,18 @@ const game = {
     game.showScreen("levelScreen");
   },
 
-  //Function to play audio
+  //Method to play audio
   playAudio: function (url) {
     const audio = new Audio(url);
     audio.play();
   },
+
   //Method to start game
   start: function () {
     game.clearScreens();
     game.showScreen("levelScreen");
     game.showScreen("scoreScreen");
-    game.playAudio("audio/melody1.mp3");
+    game.playAudio("audio/instructor-track.mp3");
     game.ended = false;
     // game.animationFrame = window.requestAnimationFrame(
     //   game.animate,
