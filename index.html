@@ -10,22 +10,46 @@
   <body>
     <div id="wrapper">
       <div id="gameContainer">
-        <canvas id="gameCanvas" class="gameLayer"></canvas>
+        <canvas id="gameCanvas" class="gameLayer">
+          <img src="images/icons/play.png" />
+        </canvas>
         <div id="startScreen" class="gameLayer">
-          <div id="startButtonsContainer">
-            <img src="images/icons/play.png" alt="Play" />
-            <img src="images/icons/menu.png" alt="Menu" />
+          <img
+            src="images/icons/play.png"
+            alt="Play game"
+            class="buttons"
+            onclick="game.start()"
+          />
+          <br />
+          <img src="images/icons/menu.png" alt="menu" class="buttons" />
+        </div>
+        <div id="loadingScreen" class="gameLayer">
+          <div id="loadingMessage">
+            <iframe
+              src="https://giphy.com/embed/m7uHEe1Gse6fxmoX7E"
+              frameborder="0"
+              class="giphy-embed"
+              allowfullscreen
+            ></iframe>
+            <p>
+              <a
+                href="https://giphy.com/gifs/pixel-art-8-bit-m7uHEe1Gse6fxmoX7E"
+              ></a>
+            </p>
           </div>
         </div>
+        <div id="levelScreen" class="gameLayer">
+          <iframe src="gif/sprite.gif" id="gif"></iframe>
+        </div>
         <div id="scoreScreen" class="gameLayer">
-          <img src="images/icons/restart.png" alt="Restart" class="icons" />
+          <!-- <img src="images/icons/restart.png" alt="restart" class="buttons" /> -->
           <span id="score">Score: 0</span>
         </div>
         <div id="endScreen" class="gameLayer">
           <div>
             <p id="endingMessage">Game over!</p>
             <p id="endPlay" class="endingOption">
-              <img src="images/icons/replay.png" alt="Replay" class="icons" />
+              <img src="images/icons/replay.png" alt="replay" class="buttons" />
             </p>
           </div>
         </div>
@@ -39,7 +63,6 @@
       <source src="audio/note1.mp3" type="audio/mpeg" id="note1" />
       <source src="audio/note2.mp3" type="audio/mpeg" id="note2" />
       <source src="audio/note3.mp3" type="audio/mpeg" id="note3" />
-      x
       <source src="audio/ding.mp3" type="audio/mpeg" id="ding" />
       <source src="audio/whistle.mp3" type="audio/mpeg" id="whistle" />
       Your browser does not support the audio element. Please use another

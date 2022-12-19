@@ -18,17 +18,12 @@ body {
   width: 100%;
   height: 0;
   padding-bottom: 56.25%;
-  background: url("images/splashscreen.png");
+  /* background: url("images/splashscreen.png"); */
   background-size: cover;
   object-fit: contain;
 }
 
 .gameLayer {
-  display: none;
-}
-
-/* Game starting menu */
-#startScreen {
   position: absolute;
   top: 50%;
   bottom: 50%;
@@ -37,20 +32,53 @@ body {
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
+  /* display: none; */
 }
 
-/* Start screen icons */
-
-#startButtonsContainer {
-  margin-top: 10%;
-}
-
-#startScreen img {
+.buttons {
   cursor: pointer;
   width: 15%;
   display: block;
-  margin: auto;
-  justify-content: center;
 }
 
-/* commit */
+#gif {
+  width: 100%;
+}
+
+/* Start screen */
+#startScreen {
+  text-align: center;
+  /* display: none; */
+}
+
+#startScreen img {
+  margin: auto;
+  margin-top: 10%;
+}
+
+/* Loading screen */
+#loadingMessage {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  text-align: center;
+  justify-content: center;
+  display: none;
+}
+
+#loadingMessage iframe {
+  margin: 40% auto 0 auto;
+  width: 30%;
+  height: 30%;
+}
+
+/* Score screen */
+#scoreScreen {
+  display: none;
+}
+
+/* End screen */
+#endScreen {
+  display: none;
+}

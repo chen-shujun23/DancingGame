@@ -5,58 +5,152 @@ const rhythm2 = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0];
 //melody3 = 11132111
 const rhythm3 = [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0];
 
-// //This function will be called once the page loads completely
-// const pageLoaded = () => {
-//   //Start initialising objects, preloading assets and display start screen
-//   //Create game object with key-value pairs that saves references to game
-//   const game = {
-//     function init:() {
-//       const canvas = document.querySelector("canvas");
-//       const ctx = canvas.getContext("2d");
-//       //Hide all game layers and display the start screen
-//       hideScreens();
-//       showScreen("#startScreen");
-//     }
-//   }
-// };
+//Basic game object
+const game = {
+  //Method to start initialising objects, preloading assets and display start screen
+  init: function () {
+    //Get handler for game canvas and game context
+    game.canvas = document.getElementById("gameCanvas");
+    game.ctx = game.canvas.getContext("2d");
 
-//Function to start initialising objects, preloading assets and display start screen
-function init() {
-  const canvas = document.querySelector("#gameCanvas");
-  const ctx = canvas.getContext("2d");
-  //Hide all game layers and display the start screen
-  clearScreens();
-  showScreen("startScreen");
-}
+    //Inititalise objects
+    level.init();
+    loader.init();
 
-//Iterate through all the game layers and set their display to none
-function clearScreens() {
-  const screenArr = [document.querySelectorAll("gameLayer")];
-  for (let i = 0; i <= screen.length; i++) {
-    const screen = screenArr[i];
+    //Hide all game layers and display the start screen
+    game.clearScreens();
+    game.showScreen("startScreen");
+  },
+  //Method to clear screens
+  clearScreens: function () {
+    const screenArr = document.getElementsByClassName("gameLayer");
+    for (let i = 0; i < screenArr.length; i++) {
+      const screen = screenArr[i];
+      screen.style.display = "none";
+    }
+  },
+  //Method to hide game layer by ID
+  hideScreen: function (id) {
+    const screen = document.getElementById(id);
     screen.style.display = "none";
-  }
-}
-//Function to hide game layer by ID
-function hideScreen(id) {
-  const screen = document.getElementById(id);
-  screen.style.display = "none";
-}
+  },
+  //Method to show game layer by ID
+  showScreen: function (id) {
+    const screen = document.getElementById(id);
+    screen.style.display = "block";
+  },
 
-//Function to show game layer by ID
-function showScreen(id) {
-  const screen = document.getElementById(id);
-  screen.style.display = "block";
-}
+  //Method to show play screen
+  showLevelScreen: function () {
+    game.clearScreens();
+    game.showScreen("levelScreen");
+  },
 
-//Function to play audio
-function playAudio(id) {
-  const audio = document.getElementById(id);
-  audio.play();
-}
+  //Function to play audio
+  playAudio: function (url) {
+    const audio = new Audio(url);
+    audio.play();
+  },
+  //Method to start game
+  start: function () {
+    game.clearScreens();
+    game.showScreen("levelScreen");
+    game.showScreen("scoreScreen");
+    game.playAudio("audio/melody1.mp3");
+    game.ended = false;
+    // game.animationFrame = window.requestAnimationFrame(
+    //   game.animate,
+    //   game.canvas
+    // );
+  },
+  handleGameLogic: function () {
+    //placeholder code;
+  },
+  // animate: function () {
+  //   game.handleGameLogic();
+  //   //Draw images
+  //   loader.loadImage("images/sprites.png");
+  //   game.ctx.drawImage(this.image, this.imageWidth*(imageNumber),0,this.);
+  // },
+};
 
 //Initialise game once page has fully loaded
-window.addEventListener("load", init);
+window.addEventListener("load", function () {
+  return game.init();
+});
+
+//=====================================================================
+
+//Image and audio loader
+const loader = {
+  loaded: true,
+  loadedCount: 0, //Assests that have been loaded so far
+  totalCount: 0, //Total number of assets that need loading
+
+  //Method to check for sound support and create audio tag upon initialisation
+  init: function () {
+    let mp3Support;
+    const audio = document.createElement("audio");
+    if (audio.canPlayType("audio/mpeg") === "probably") {
+      mp3Support = true;
+    } else {
+      mp3Support = false;
+      alert(
+        "Your browser does not support mp3 audio. Please shift to a new browser"
+      );
+    }
+  },
+  loadSound: function (url) {
+    this.loaded = false;
+    this.totalCount++;
+    game.showScreen("loadingScreen");
+    const audio = new Audio();
+    audio.addEventListener("canplaythrough", loader.itemLoaded, false);
+    audio.src = url;
+    return audio;
+  },
+  loadImage: function (url) {
+    this.loaded = false;
+    this.totalCount++;
+    game.showScreen("loadingScreen");
+    const image = new Image();
+    image.addEventListener("load", loader.itemLoaded, false);
+    image.src = url;
+    return image;
+  },
+  //Method to stop listening for event type for this item already loaded
+  itemLoaded: function (e) {
+    e.target.removeEventListener(e.type, loader.itemLoaded, false);
+    loader.loadedCount++;
+    document.getElementById("loadingMessage").innerHTML =
+      "Loaded " + loader.loadedCount + "of " + loader.totalCount;
+    if (loader.loadedCount === loader.totalCount) {
+      loader.loaded = true;
+      loader.loadedCount = 0;
+      loader.totalCount = 0;
+      game.hideScreen("loadingScreen");
+    }
+  },
+};
+
+//======================================================================
+
+//Basic level object
+
+const level = {
+  //level data
+  init: function () {
+    const levelScreen = document.getElementById("levelScreen");
+  },
+  load: function () {
+    game.score = 0;
+    document.getElementById("score").innerHTML = "Score: " + game.score;
+    //Load the images for level
+    game.spritesheet = loader.loadImage("images/sprites.png");
+    //Call game to start once all assets loaded
+    loader.onload = game.start;
+  },
+};
 
 console.log("no bug");
 
@@ -75,5 +169,4 @@ console.log("no bug");
 // //   width,
 // //   height
 // // );
-
-//commit
+loader.loadImage("images/sprites.png");
