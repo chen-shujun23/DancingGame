@@ -7,13 +7,15 @@
     <link href="main.css" rel="stylesheet" />
     <title>Dancing Game</title>
   </head>
-  <body onload="pageLoaded();">
+  <body>
     <div id="wrapper">
       <div id="gameContainer">
         <canvas id="gameCanvas" class="gameLayer"></canvas>
         <div id="startScreen" class="gameLayer">
-          <img src="images/icons/play.png" alt="Play" class="icons" />
-          <img src="images/icons/menu.png" alt="Menu" class="icons" />
+          <div id="startButtonsContainer">
+            <img src="images/icons/play.png" alt="Play" />
+            <img src="images/icons/menu.png" alt="Menu" />
+          </div>
         </div>
         <div id="scoreScreen" class="gameLayer">
           <img src="images/icons/restart.png" alt="Restart" class="icons" />
@@ -29,6 +31,19 @@
         </div>
       </div>
     </div>
-    <script src="script.js" charset="utf-8"></script>
+    <audio hidden>
+      <source src="audio/beats.mp3" type="audio/mpeg" id="beats" />
+      <source src="audio/melody1.mp3" type="audio/mpeg" id="melody1" />
+      <source src="audio/melody2.mp3" type="audio/mpeg" id="melody2" />
+      <source src="audio/melody3.mp3" type="audio/mpeg" id="melody3" />
+      <source src="audio/note1.mp3" type="audio/mpeg" id="note1" />
+      <source src="audio/note2.mp3" type="audio/mpeg" id="note2" />
+      <source src="audio/note3.mp3" type="audio/mpeg" id="note3" />
+      <source src="audio/ding.mp3" type="audio/mpeg" id="ding" />
+      <source src="audio/whistle.mp3" type="audio/mpeg" id="whistle" />
+      Your browser does not support the audio element. Please use another
+      browser.
+    </audio>
+    <script src="game.js" charset="utf-8"></script>
   </body>
 </html>
