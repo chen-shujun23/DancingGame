@@ -5,7 +5,10 @@ const rhythm2 = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0];
 //melody3 = 11132111
 const rhythm3 = [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0];
 
-//Basic game object
+//===============================
+//Game object
+//===============================
+
 const game = {
   //Method to start initialising objects, preloading assets and display start screen
   init: function () {
@@ -46,10 +49,16 @@ const game = {
     game.showScreen("levelScreen");
   },
 
-  //Method to play audio
-  playAudio: function (url) {
-    const audio = new Audio(url);
-    audio.play();
+  //Method to get elapsed time
+  getElapsedTime: function () {
+    let startTime = Date.now();
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        let endTime = Date.now();
+        let elapsedTime = (endTime - startTime) / 1000; //Convert to seconds
+        console.log(elapsedTime);
+      }
+    });
   },
 
   //Method to start game
@@ -57,22 +66,9 @@ const game = {
     game.clearScreens();
     game.showScreen("levelScreen");
     game.showScreen("scoreScreen");
-    game.playAudio("audio/instructor-track.mp3");
-    game.ended = false;
-    // game.animationFrame = window.requestAnimationFrame(
-    //   game.animate,
-    //   game.canvas
-    // );
+    game.getElapsedTime();
+    level.load();
   },
-  handleGameLogic: function () {
-    //placeholder code;
-  },
-  // animate: function () {
-  //   game.handleGameLogic();
-  //   //Draw images
-  //   loader.loadImage("images/sprites.png");
-  //   game.ctx.drawImage(this.image, this.imageWidth*(imageNumber),0,this.);
-  // },
 };
 
 //Initialise game once page has fully loaded
@@ -80,9 +76,10 @@ window.addEventListener("load", function () {
   return game.init();
 });
 
-//=====================================================================
+//===============================
+//Image & audio loader object
+//===============================
 
-//Image and audio loader
 const loader = {
   loaded: true,
   loadedCount: 0, //Assests that have been loaded so far
@@ -101,24 +98,27 @@ const loader = {
       );
     }
   },
-  loadSound: function (url) {
+  loadSound: function (url, id) {
     this.loaded = false;
     this.totalCount++;
     game.showScreen("loadingScreen");
-    const audio = new Audio();
+    const audio = document.createElement("audio");
     audio.addEventListener("canplaythrough", loader.itemLoaded, false);
     audio.src = url;
+    audio.id = id;
     return audio;
   },
-  loadImage: function (url) {
+  loadImage: function (url, id) {
     this.loaded = false;
     this.totalCount++;
     game.showScreen("loadingScreen");
-    const image = new Image();
+    let image = document.createElement("img");
     image.addEventListener("load", loader.itemLoaded, false);
     image.src = url;
+    image.id = id;
     return image;
   },
+
   //Method to stop listening for event type for this item already loaded
   itemLoaded: function (e) {
     e.target.removeEventListener(e.type, loader.itemLoaded, false);
@@ -134,40 +134,52 @@ const loader = {
   },
 };
 
-//======================================================================
-
-//Basic level object
+//===============================
+//Game level object
+//===============================
 
 const level = {
   //level data
   init: function () {
-    const levelScreen = document.getElementById("levelScreen");
+    levelScreen = document.getElementById("levelScreen");
   },
   load: function () {
     game.score = 0;
-    document.getElementById("score").innerHTML = "Score: " + game.score;
+    document.getElementById("score").innerHTML = "Score!!!!!!: " + game.score;
     //Load the images for level
-    game.spritesheet = loader.loadImage("images/sprites.png");
-    //Call game to start once all assets loaded
-    loader.onload = game.start;
+    //Load instructor gif
+    game.instructorGif = loader.loadImage(
+      "gif/instructor.gif",
+      "instructorGif"
+    );
+    levelScreen.appendChild(game.instructorGif);
+    //Load afro for player
+    game.playerAfro = loader.loadImage("images/player-afro.png", "playerAfro");
+    levelScreen.appendChild(game.playerAfro);
+    //Load player starting moves gif
+    game.playerGif = loader.loadImage(
+      "gif/player-startingmoves.gif",
+      "playerGif"
+    );
+    levelScreen.appendChild(game.playerGif);
+    //Load player sprites
+    game.playerSprites = loader.loadImage(
+      "images/player-spritesheet.png",
+      "playerSprites"
+    );
+    levelScreen.appendChild(game.playerSprites);
+
+    //Load the audio for level
+    game.baseAudio = loader.loadSound("audio/base-audio.mp3", "baseAudio");
+    levelScreen.appendChild(game.baseAudio);
+    baseAudio.play();
   },
 };
 
-console.log("no bug");
+//===============================
+//Timer object
+//===============================
 
-// //Get sprites
-// const spriteSheet = document.querySelector("#sprite-sheet");
-// //DRAWING code here:
-// // Draw a sprite from the sprite sheet onto the canvas
-// // context.drawImage(
-// //   spriteSheet,
-// //   x,
-// //   y,
-// //   width,
-// //   height,
-// //   canvasX,
-// //   canvasY,
-// //   width,
-// //   height
-// // );
-loader.loadImage("images/sprites.png");
+const Timer = {};
+
+console.log("no bug");

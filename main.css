@@ -76,11 +76,32 @@ body {
 /* Level screen */
 
 #instructorGif {
-  position: relative;
   height: 35%;
   margin: 15% auto 0 auto;
   display: block;
-  /* object-fit: contain; */
+}
+
+#playerGif {
+  position: absolute;
+  height: 35%;
+  margin: 0;
+  display: block;
+  transform: translate(200%, -70%);
+}
+
+#playerSprites {
+  position: absolute;
+  justify-content: left;
+  height: 35%;
+  display: none;
+}
+
+#playerAfro {
+  position: absolute;
+  height: 15%;
+  margin: 0;
+  display: block;
+  transform: translate(165%, -215%);
 }
 
 /* Score screen */
