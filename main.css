@@ -23,6 +23,15 @@ body {
   object-fit: contain;
 }
 
+/* #canvas {
+  position: relative;
+  z-index: 10;
+  border: 2px solid white;
+  width: 16.5vw;
+  height: 19.8vw;
+  transform: translate(-473%, 153%);
+} */
+
 .gameLayer {
   position: absolute;
   top: 50%;
@@ -81,32 +90,42 @@ body {
   display: block;
 }
 
-#playerGif {
+/* #playerGif {
   position: absolute;
   height: 35%;
   margin: 0;
   display: block;
   transform: translate(200%, -70%);
-}
+} */
 
-#playerSprites {
+#playerImg img {
   position: absolute;
-  justify-content: left;
-  height: 35%;
-  display: none;
+  height: 50%;
+  margin: 0;
+  display: block;
+  transform: translate(60%, 45%);
+  justify-content: center;
+  z-index: 10;
 }
 
 #playerAfro {
   position: absolute;
-  height: 15%;
+  height: 20%;
   margin: 0;
   display: block;
-  transform: translate(165%, -215%);
+  transform: translate(120%, -175%);
 }
 
 /* Score screen */
 #scoreScreen {
   display: none;
+}
+
+#score {
+  position: absolute;
+  color: white;
+  font-family: "VT323", monospace;
+  font-size: 5vw;
 }
 
 /* End screen */

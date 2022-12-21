@@ -1,3 +1,7 @@
+//===============================
+//Game global variables
+//===============================
+
 //melody1 = 11231
 const rhythm1 = [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0];
 //melody2 = 111321
@@ -47,21 +51,20 @@ window.addEventListener("load", function () {
 });
 
 const game = {
-  score: 0,
-
   //Method to start initialising objects, preloading assets and display start screen
   init: function () {
-    //Get handler for game canvas and game context
-    this.canvas = document.getElementById("gameCanvas");
-    this.ctx = game.canvas.getContext("2d");
+    // //Get handler for game canvas and game context
+    // game.canvas = document.getElementById("canvas");
+    // game.ctx = game.canvas.getContext("2d");
 
     //Inititalise objects
     level.init();
     loader.init();
+    scoreboard.init();
 
     //Hide all game layers and display the start screen
-    this.clearScreens();
-    this.showScreen("startScreen");
+    game.clearScreens();
+    game.showScreen("startScreen");
   },
 
   //Method to clear screens
@@ -91,34 +94,14 @@ const game = {
     this.showScreen("levelScreen");
   },
 
-  //Method to get elapsed time between game start and user pressing enter,
-  //Rounded to the nearest 0.125 second
-  //Add to score if elapsed time matches precise time
-  getRoundedElapsedTime: function () {
-    let startTime = Date.now();
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        let endTime = Date.now();
-        let elapsedTime = endTime - startTime;
-        let roundedElapsedTime = Math.round(elapsedTime / 125) * 0.125;
-        console.log(roundedElapsedTime);
-        if (preciseTimingArr.includes(roundedElapsedTime)) {
-          let updatedScore = game.score++;
-          console.log(`Your score is ${updatedScore}`);
-        } else {
-          console.log("You missed!");
-        }
-      }
-    });
-  },
-
   //Method  to start game
   start: function () {
-    this.clearScreens();
-    this.showScreen("levelScreen");
+    game.clearScreens();
+    game.showScreen("canvas");
+    game.showScreen("levelScreen");
+    game.showScreen("scoreScreen");
     level.load();
-    this.showScreen("scoreScreen");
-    this.getRoundedElapsedTime();
+    scoreboard.updateScore();
   },
 };
 
@@ -188,10 +171,9 @@ const level = {
   //level data
   init: function () {
     levelScreen = document.getElementById("levelScreen");
+    playerImgContainer = document.getElementById("playerImg");
   },
   load: function () {
-    game.score = 0;
-    document.getElementById("score").innerHTML = "Score:" + game.score;
     //Load the images for level
     //Load instructor gif
     game.instructorGif = loader.loadImage(
@@ -199,26 +181,54 @@ const level = {
       "instructorGif"
     );
     levelScreen.appendChild(game.instructorGif);
-    //Load afro for player
-    game.playerAfro = loader.loadImage("images/player-afro.png", "playerAfro");
-    levelScreen.appendChild(game.playerAfro);
-    //Load player starting moves gif
-    game.playerGif = loader.loadImage(
-      "gif/player-startingmoves.gif",
-      "playerGif"
-    );
-    levelScreen.appendChild(game.playerGif);
-    //Load player sprites
-    game.playerSprites = loader.loadImage(
-      "images/player-spritesheet.png",
-      "playerSprites"
-    );
-    levelScreen.appendChild(game.playerSprites);
+
+    //Load player images
+    game.playerImg = loader.loadImage("images/player1.png");
+    playerImgContainer.appendChild(game.playerImg);
 
     //Load the audio for level
     game.baseAudio = loader.loadSound("audio/base-audio.mp3", "baseAudio");
     levelScreen.appendChild(game.baseAudio);
     baseAudio.play();
+  },
+};
+
+//===============================
+//Scoreboard object
+//===============================
+
+const scoreboard = {
+  score: 0,
+  init: function () {
+    scoreScreen = document.getElementById("scoreScreen");
+  },
+  //Method to get elapsed time between game start and user pressing enter,
+  //Rounded to the nearest 0.125 second
+  //Add to score if elapsed time matches precise time
+  updateScore: function () {
+    let startTime = Date.now();
+    let URL = 0;
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        let endTime = Date.now();
+        let elapsedTime = endTime - startTime;
+        let roundedElapsedTime = Math.round(elapsedTime / 125) * 0.125;
+        console.log(roundedElapsedTime);
+        if (preciseTimingArr.includes(roundedElapsedTime)) {
+          let updatedScore = scoreboard.score++ + 1;
+          document.getElementById("score").innerHTML =
+            "Score:" + scoreboard.score + "/19";
+          let updatedURL = URL++ + 1;
+          console.log(`URL: ${updatedURL}`);
+          let player = document.getElementById("playerImg");
+          player.innerHTML = '<img src="images/player' + updatedURL + '.png"/>';
+          console.log(player);
+          console.log(`Score : ${updatedScore}`);
+        } else {
+          console.log("Missed!");
+        }
+      }
+    });
   },
 };
 
