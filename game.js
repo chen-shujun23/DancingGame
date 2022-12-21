@@ -5,25 +5,65 @@ const rhythm2 = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0];
 //melody3 = 11132111
 const rhythm3 = [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0];
 
+const rhythm1TimingArr = [];
+for (let i = 0; i < 16; i++) {
+  if (rhythm1[i] === 1) {
+    const timing = 4 + (i + 1) * 0.125;
+    rhythm1TimingArr.push(timing);
+  }
+}
+
+const rhythm2TimingArr = [];
+for (let i = 0; i < 16; i++) {
+  if (rhythm2[i] === 1) {
+    const timing = 8 + (i + 1) * 0.125;
+    rhythm2TimingArr.push(timing);
+  }
+}
+
+const rhythm3TimingArr = [];
+for (let i = 0; i < 16; i++) {
+  if (rhythm3[i] === 1) {
+    const timing = 12 + (i + 1) * 0.125;
+    rhythm3TimingArr.push(timing);
+  }
+}
+
+const preciseTimingArr = [
+  ...rhythm1TimingArr,
+  ...rhythm2TimingArr,
+  ...rhythm3TimingArr,
+];
+
+console.log(preciseTimingArr);
+
 //===============================
 //Game object
 //===============================
 
+//Initialise game once page has fully loaded
+window.addEventListener("load", function () {
+  return game.init();
+});
+
 const game = {
+  score: 0,
+
   //Method to start initialising objects, preloading assets and display start screen
   init: function () {
     //Get handler for game canvas and game context
-    game.canvas = document.getElementById("gameCanvas");
-    game.ctx = game.canvas.getContext("2d");
+    this.canvas = document.getElementById("gameCanvas");
+    this.ctx = game.canvas.getContext("2d");
 
     //Inititalise objects
     level.init();
     loader.init();
 
     //Hide all game layers and display the start screen
-    game.clearScreens();
-    game.showScreen("startScreen");
+    this.clearScreens();
+    this.showScreen("startScreen");
   },
+
   //Method to clear screens
   clearScreens: function () {
     const screenArr = document.getElementsByClassName("gameLayer");
@@ -32,11 +72,13 @@ const game = {
       screen.style.display = "none";
     }
   },
+
   //Method to hide game layer by ID
   hideScreen: function (id) {
     const screen = document.getElementById(id);
     screen.style.display = "none";
   },
+
   //Method to show game layer by ID
   showScreen: function (id) {
     const screen = document.getElementById(id);
@@ -45,36 +87,40 @@ const game = {
 
   //Method to show play screen
   showLevelScreen: function () {
-    game.clearScreens();
-    game.showScreen("levelScreen");
+    this.clearScreens();
+    this.showScreen("levelScreen");
   },
 
-  //Method to get elapsed time
-  getElapsedTime: function () {
+  //Method to get elapsed time between game start and user pressing enter,
+  //Rounded to the nearest 0.125 second
+  //Add to score if elapsed time matches precise time
+  getRoundedElapsedTime: function () {
     let startTime = Date.now();
     document.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
         let endTime = Date.now();
-        let elapsedTime = (endTime - startTime) / 1000; //Convert to seconds
-        console.log(elapsedTime);
+        let elapsedTime = endTime - startTime;
+        let roundedElapsedTime = Math.round(elapsedTime / 125) * 0.125;
+        console.log(roundedElapsedTime);
+        if (preciseTimingArr.includes(roundedElapsedTime)) {
+          let updatedScore = game.score++;
+          console.log(`Your score is ${updatedScore}`);
+        } else {
+          console.log("You missed!");
+        }
       }
     });
   },
 
-  //Method to start game
+  //Method  to start game
   start: function () {
-    game.clearScreens();
-    game.showScreen("levelScreen");
-    game.showScreen("scoreScreen");
-    game.getElapsedTime();
+    this.clearScreens();
+    this.showScreen("levelScreen");
     level.load();
+    this.showScreen("scoreScreen");
+    this.getRoundedElapsedTime();
   },
 };
-
-//Initialise game once page has fully loaded
-window.addEventListener("load", function () {
-  return game.init();
-});
 
 //===============================
 //Image & audio loader object
@@ -145,7 +191,7 @@ const level = {
   },
   load: function () {
     game.score = 0;
-    document.getElementById("score").innerHTML = "Score!!!!!!: " + game.score;
+    document.getElementById("score").innerHTML = "Score:" + game.score;
     //Load the images for level
     //Load instructor gif
     game.instructorGif = loader.loadImage(
@@ -175,11 +221,5 @@ const level = {
     baseAudio.play();
   },
 };
-
-//===============================
-//Timer object
-//===============================
-
-const Timer = {};
 
 console.log("no bug");
