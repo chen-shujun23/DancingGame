@@ -39,7 +39,7 @@ This is a dancing game inspired by retro PSX game, Bishi Bashi Perm Mania, which
 ## Challenges
 
 - Matching the animation with the audio
-- Animating the player character with each enter keydown; transition is still not smooth
+- Animating the player character with each enter keydown; transition is extremely laggy in the live website
 - Was not able to piece together the beat and melody using javascript without pauses between each audio
 
 ## Unsolved Problems & Further Work
