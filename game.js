@@ -2,11 +2,8 @@
 //Game global variables
 //===============================
 
-//melody1 = 11231
 const rhythm1 = [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0];
-//melody2 = 111321
 const rhythm2 = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0];
-//melody3 = 11132111
 const rhythm3 = [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0];
 
 const rhythm1TimingArr = [];
@@ -42,7 +39,7 @@ const preciseTimingArr = [
 console.log(preciseTimingArr);
 
 //===============================
-//Game object
+//Main game object
 //===============================
 
 //Initialise game once page has fully loaded
@@ -53,13 +50,9 @@ window.addEventListener("load", function () {
 const game = {
   //Method to start initialising objects, preloading assets and display start screen
   init: function () {
-    // //Get handler for game canvas and game context
-    // game.canvas = document.getElementById("canvas");
-    // game.ctx = game.canvas.getContext("2d");
-
     //Inititalise objects
+    instruction.init();
     level.init();
-    // loader.init();
     scoreboard.init();
     ending.init();
 
@@ -77,28 +70,23 @@ const game = {
     }
   },
 
-  // //Method to hide game layer by ID
-  // hideScreen: function (id) {
-  //   const screen = document.getElementById(id);
-  //   screen.style.display = "none";
-  // },
-
   //Method to show game layer by ID
   showScreen: function (id) {
     const screen = document.getElementById(id);
     screen.style.display = "block";
   },
 
-  // //Method to show play screen
-  // showLevelScreen: function () {
-  //   this.clearScreens();
-  //   this.showScreen("levelScreen");
-  // },
+  //Method to show instruction
+  instruct: function () {
+    instruction.load();
+    instruction.refreshScreen();
+    game.clearScreens();
+    game.showScreen("instructionScreen");
+  },
 
   //Method  to start game
   start: function () {
     game.clearScreens();
-    game.showScreen("canvas");
     game.showScreen("levelScreen");
     game.showScreen("scoreScreen");
     level.load();
@@ -111,62 +99,67 @@ const game = {
 //Image & audio loader object
 //===============================
 
+//Loader method for loading assets
 const loader = {
-  loaded: true,
-  loadedCount: 0, //Assests that have been loaded so far
-  totalCount: 0, //Total number of assets that need loading
-
-  //Method to check for sound support and create audio tag upon initialisation
   init: function () {
     let mp3Support;
-    const audio = document.createElement("audio");
     if (audio.canPlayType("audio/mpeg") === "probably") {
-      mp3Support = true;
-    } else {
       mp3Support = false;
       alert(
-        "Your browser does not support mp3 audio. Please shift to a new browser"
+        "Your browser does not support mp3 audio. Please shift to a another browser"
+      );
+    }
+    let mp4Support;
+    if (video.canPlayType("audio/mpeg") === "probably") {
+      mp4Support = false;
+      alert(
+        "Your browser does not support mp4 video. Please shift to a another browser"
       );
     }
   },
   loadSound: function (url, id) {
-    this.loaded = false;
-    this.totalCount++;
-    game.showScreen("loadingScreen");
     const audio = document.createElement("audio");
-    audio.addEventListener("canplaythrough", loader.itemLoaded, false);
     audio.src = url;
     audio.id = id;
     return audio;
   },
   loadImage: function (url, id) {
-    this.loaded = false;
-    this.totalCount++;
-    game.showScreen("loadingScreen");
     let image = document.createElement("img");
-    image.addEventListener("load", loader.itemLoaded, false);
     image.src = url;
     image.id = id;
     return image;
   },
-
-  // //Method to stop listening for event type for this item already loaded
-  // itemLoaded: function (e) {
-  //   e.target.removeEventListener(e.type, loader.itemLoaded, false);
-  //   loader.loadedCount++;
-  //   document.getElementById("loadingMessage").innerHTML =
-  //     "Loaded " + loader.loadedCount + "of " + loader.totalCount;
-  //   if (loader.loadedCount === loader.totalCount) {
-  //     loader.loaded = true;
-  //     loader.loadedCount = 0;
-  //     loader.totalCount = 0;
-  //     game.hideScreen("loadingScreen");
-  //   }
-  // },
+  loadVideo: function (url) {
+    let source = document.createElement("source");
+    source.src = url;
+    return source;
+  },
 };
 
 //===============================
-//Game level object
+//Instructions object
+//===============================
+
+const instruction = {
+  init: function () {
+    instructionScreen = document.getElementById("instructionScreen");
+    video = document.getElementById("video");
+  },
+  load: function () {
+    videoSource = loader.loadVideo("video/instruction.mp4");
+    video.appendChild(videoSource);
+    enterGif = loader.loadImage("gif/enter.gif", "enterGif");
+    instructionScreen.appendChild(enterGif);
+  },
+  refreshScreen: function () {
+    setTimeout(function () {
+      location.reload();
+    }, 7000);
+  },
+};
+
+//===============================
+//Level object
 //===============================
 
 const level = {
@@ -206,7 +199,7 @@ const scoreboard = {
   //Add to score if elapsed time matches precise time
   updateScore: function () {
     let startTime = Date.now();
-    let URL = 0;
+    let URL = 1;
     document.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
         let endTime = Date.now();
@@ -265,7 +258,6 @@ const ending = {
   },
 
   winLose: function () {
-    // baseAudio = getElementById("baseAudio");
     game.baseAudio.addEventListener("ended", function () {
       if (scoreboard.score > 10) {
         game.clearScreens();

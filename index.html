@@ -3,10 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <!-- <meta
-      name="viewport"
-      content="user-scalable=no, initial-scale=1, maximum-scale=1, maximum-scale=1, width = device-width"
-    /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="main.css" rel="stylesheet" />
     <link href="images/favicon.ico" rel="icon" />
@@ -22,7 +18,14 @@
   <body>
     <div id="wrapper">
       <div id="gameContainer">
-        <canvas id="canvas" class="gameLayer"> </canvas>
+        <div id="instructionScreen" class="gameLayer">
+          <h1>INSTRUCTIONS</h1>
+          <p id="instructText">
+            Press 'Enter' to the rhythm of the music when it is your turn to
+            dance.
+          </p>
+          <video id="video" autoplay></video>
+        </div>
         <div id="startScreen" class="gameLayer">
           <img
             src="images/icons/play.png"
@@ -32,7 +35,12 @@
             onclick="game.start()"
           />
           <br />
-          <img src="images/icons/menu.png" alt="menu" class="buttons" />
+          <img
+            src="images/icons/menu.png"
+            alt="menu"
+            class="buttons"
+            onclick="game.instruct()"
+          />
         </div>
         <div id="loadingScreen" class="gameLayer">
           <div id="loadingMessage">
