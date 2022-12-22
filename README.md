@@ -14,9 +14,10 @@ This is a dancing game inspired by retro PSX game, Bishi Bashi Perm Mania, which
 
 ## General Approach
 
-**Object literal Programming**
+**Object Literal Programming & Event Listeners**
 
 - Creating objects using object literals, which are collections of key-value pairs.
+- Adding event listeners to listen for specific events and event handlers that return results needed to advance the game.
 
 ### Breakdown of Approach
 
@@ -39,12 +40,12 @@ This is a dancing game inspired by retro PSX game, Bishi Bashi Perm Mania, which
 ## Challenges
 
 - Matching the animation with the audio
-- Animating the player character with each enter keydown; transition is extremely laggy in the live website
+- Animating the player character with each enter keydown; transition is extremely laggy on the live website
 - Was not able to piece together the beat and melody using javascript without pauses between each audio
 
 ## Unsolved Problems & Further Work
 
-1. Player's character flickers when it changes dance moves. This could be because it is animated by iteratimg and switching the image source url. This might be resolved by using a spritesheet of all the player images in one canvas, instead of using individual player images.
+1. Player's character flickers when it changes dance moves. This could be because it is animated by iterating and switching the image source url. This might be resolved by using a spritesheet of all the player images in one canvas, instead of using individual player images.
 2. To include a second player or allow the player to play against a pre-programmed computer.
 3. Consider different levels of difficulties.
 
