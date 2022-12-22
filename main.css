@@ -2,7 +2,7 @@
 body {
   user-select: none;
   margin: auto;
-  background-color: white;
+  background-color: black;
 }
 
 #wrapper {
@@ -75,12 +75,12 @@ body {
   justify-content: center;
   display: none;
 }
-
+/* 
 #loadingMessage iframe {
   margin: 40% auto 0 auto;
   width: 30%;
   height: 30%;
-}
+} */
 
 /* Level screen */
 
@@ -108,13 +108,13 @@ body {
   z-index: 10;
 }
 
-#playerAfro {
+/* #playerAfro {
   position: absolute;
   height: 20%;
   margin: 0;
   display: block;
   transform: translate(120%, -175%);
-}
+} */
 
 /* Score screen */
 #scoreScreen {
@@ -129,6 +129,8 @@ body {
 }
 
 /* End screen */
-#endScreen {
-  display: none;
+#winnerGif {
+  position: absolute;
+  display: block;
+  width: 100%;
 }

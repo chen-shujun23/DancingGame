@@ -59,8 +59,9 @@ const game = {
 
     //Inititalise objects
     level.init();
-    loader.init();
+    // loader.init();
     scoreboard.init();
+    ending.init();
 
     //Hide all game layers and display the start screen
     game.clearScreens();
@@ -76,11 +77,11 @@ const game = {
     }
   },
 
-  //Method to hide game layer by ID
-  hideScreen: function (id) {
-    const screen = document.getElementById(id);
-    screen.style.display = "none";
-  },
+  // //Method to hide game layer by ID
+  // hideScreen: function (id) {
+  //   const screen = document.getElementById(id);
+  //   screen.style.display = "none";
+  // },
 
   //Method to show game layer by ID
   showScreen: function (id) {
@@ -88,11 +89,11 @@ const game = {
     screen.style.display = "block";
   },
 
-  //Method to show play screen
-  showLevelScreen: function () {
-    this.clearScreens();
-    this.showScreen("levelScreen");
-  },
+  // //Method to show play screen
+  // showLevelScreen: function () {
+  //   this.clearScreens();
+  //   this.showScreen("levelScreen");
+  // },
 
   //Method  to start game
   start: function () {
@@ -102,6 +103,7 @@ const game = {
     game.showScreen("scoreScreen");
     level.load();
     scoreboard.updateScore();
+    ending.winLose();
   },
 };
 
@@ -148,19 +150,19 @@ const loader = {
     return image;
   },
 
-  //Method to stop listening for event type for this item already loaded
-  itemLoaded: function (e) {
-    e.target.removeEventListener(e.type, loader.itemLoaded, false);
-    loader.loadedCount++;
-    document.getElementById("loadingMessage").innerHTML =
-      "Loaded " + loader.loadedCount + "of " + loader.totalCount;
-    if (loader.loadedCount === loader.totalCount) {
-      loader.loaded = true;
-      loader.loadedCount = 0;
-      loader.totalCount = 0;
-      game.hideScreen("loadingScreen");
-    }
-  },
+  // //Method to stop listening for event type for this item already loaded
+  // itemLoaded: function (e) {
+  //   e.target.removeEventListener(e.type, loader.itemLoaded, false);
+  //   loader.loadedCount++;
+  //   document.getElementById("loadingMessage").innerHTML =
+  //     "Loaded " + loader.loadedCount + "of " + loader.totalCount;
+  //   if (loader.loadedCount === loader.totalCount) {
+  //     loader.loaded = true;
+  //     loader.loadedCount = 0;
+  //     loader.totalCount = 0;
+  //     game.hideScreen("loadingScreen");
+  //   }
+  // },
 };
 
 //===============================
@@ -176,20 +178,17 @@ const level = {
   load: function () {
     //Load the images for level
     //Load instructor gif
-    game.instructorGif = loader.loadImage(
-      "gif/instructor.gif",
-      "instructorGif"
-    );
-    levelScreen.appendChild(game.instructorGif);
+    instructorGif = loader.loadImage("gif/instructor.gif", "instructorGif");
+    levelScreen.appendChild(instructorGif);
 
     //Load player images
-    game.playerImg = loader.loadImage("images/player1.png");
-    playerImgContainer.appendChild(game.playerImg);
+    playerImg = loader.loadImage("images/player1.png");
+    playerImgContainer.appendChild(playerImg);
 
     //Load the audio for level
     game.baseAudio = loader.loadSound("audio/base-audio.mp3", "baseAudio");
     levelScreen.appendChild(game.baseAudio);
-    baseAudio.play();
+    game.baseAudio.play();
   },
 };
 
@@ -222,11 +221,56 @@ const scoreboard = {
           console.log(`URL: ${updatedURL}`);
           let player = document.getElementById("playerImg");
           player.innerHTML = '<img src="images/player' + updatedURL + '.png"/>';
-          console.log(player);
           console.log(`Score : ${updatedScore}`);
         } else {
           console.log("Missed!");
         }
+      }
+    });
+  },
+};
+
+//===============================
+//Ending screen object
+//===============================
+const ending = {
+  init: function () {
+    // baseAudio = document.getElementById("baseAudio");
+    winScreen = document.getElementById("winScreen");
+    loseScreen = document.getElementById("loseScreen");
+
+    //Load winning screen
+    winnerGif = loader.loadImage("gif/winningscreen.gif", "winnerGif");
+    winScreen.appendChild(winnerGif);
+
+    //Load winning cheer
+    ending.cheer = loader.loadSound("audio/cheer.mp3", "cheer");
+    winScreen.appendChild(ending.cheer);
+
+    //Load losing screen
+    loserImg = loader.loadImage("images/losingscreen.png", "loserImg");
+    loseScreen.appendChild(loserImg);
+
+    //Declare confetti
+    JSConfetti = window.JSConfetti;
+    jsConfetti = new JSConfetti();
+  },
+
+  rainConfetti: function () {
+    jsConfetti.addConfetti({ confettiNumber: 1000 });
+  },
+
+  winLose: function () {
+    // baseAudio = getElementById("baseAudio");
+    game.baseAudio.addEventListener("ended", function () {
+      if (scoreboard.score > 10) {
+        game.clearScreens();
+        game.showScreen("winScreen");
+        ending.rainConfetti();
+        ending.cheer.play();
+      } else {
+        game.clearScreens();
+        game.showScreen("loseScreen");
       }
     });
   },
