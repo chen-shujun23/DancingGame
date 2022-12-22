@@ -251,6 +251,10 @@ const ending = {
     loserImg = loader.loadImage("images/losingscreen.png", "loserImg");
     loseScreen.appendChild(loserImg);
 
+    //Load losing boo
+    ending.boo = loader.loadSound("audio/boo.mp3", "boo");
+    loseScreen.appendChild(ending.boo);
+
     //Declare confetti
     JSConfetti = window.JSConfetti;
     jsConfetti = new JSConfetti();
@@ -271,6 +275,7 @@ const ending = {
       } else {
         game.clearScreens();
         game.showScreen("loseScreen");
+        ending.boo.play();
       }
     });
   },

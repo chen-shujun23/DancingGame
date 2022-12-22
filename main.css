@@ -134,3 +134,9 @@ body {
   display: block;
   width: 100%;
 }
+
+#loserImg {
+  position: absolute;
+  display: block;
+  width: 100%;
+}
