@@ -210,10 +210,6 @@ const level = {
 //Scoreboard object
 //===============================
 
-//Dynamic objects: Dynamic objects are objects whose properties and methods can be added or removed at runtime.
-//You can create dynamic objects using object literals, and add or remove properties and methods using regular
-//object property assignment and delete, as shown in the following example:
-
 const scoreboard = {
   score: 0,
   init: function () {
