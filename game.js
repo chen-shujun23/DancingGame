@@ -197,7 +197,7 @@ const level = {
     );
     levelScreen.appendChild(game.instructorGif);
     //Load player images
-    game.playerImg = loader.loadImage("images/player1.png");
+    game.playerImg = loader.loadImage("images/player1.webp");
     playerImgContainer.appendChild(game.playerImg);
     //Load the audio for level
     game.baseAudio = loader.loadSound("audio/base-audio.mp3", "baseAudio");
@@ -230,11 +230,12 @@ const scoreboard = {
           //Score dynamically updates during runtime
           let updatedScore = scoreboard.score++ + 1;
           document.getElementById("score").innerHTML =
-            "Score:" + scoreboard.score + "/19";
+            "Score:" + updatedScore + "/19";
           //Player image dynamically updates during runtime by changing the image URL
           let updatedURL = URL++ + 1;
           let player = document.getElementById("playerImg");
-          player.innerHTML = '<img src="images/player' + updatedURL + '.png"/>';
+          player.innerHTML =
+            '<img src="images/player' + updatedURL + '.webp"/>';
         }
       }
     });
@@ -259,7 +260,7 @@ const ending = {
     winScreen.appendChild(ending.cheer);
 
     //Load losing screen
-    ending.loserImg = loader.loadImage("images/losingscreen.png", "loserImg");
+    ending.loserImg = loader.loadImage("images/losingscreen.webp", "loserImg");
     loseScreen.appendChild(ending.loserImg);
 
     //Load losing boo
